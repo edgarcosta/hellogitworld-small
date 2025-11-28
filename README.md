@@ -65,14 +65,23 @@ git push
 Now see the changes in the monorepo
 ```
 git subtree pull --prefix=src src main
-git log -n 4 --oneline
+git log -n 10 --oneline
 git push
 git subtree push --prefix=src src main
 ```
 
 
-# Update monorepo
-# Pull changes
-git subtree pull --prefix=src src main
-git log -n 4 --oneline
+### Graphs
+```
+git log --oneline --graph
+```
+
+# Monorepo
+https://gist.github.com/edgarcosta/c6e7088f4b83138dcea2f4b2d693148a
+
+
+# Standalone
+https://gist.github.com/edgarcosta/4ddaa2d78d3a7ff530a2e9a35acba72a
+
+
 
