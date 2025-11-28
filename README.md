@@ -28,3 +28,8 @@ git pull
 git commit -am "instructions"
 git push
 
+# Update monorepo
+# Pull changes
+git subtree pull --prefix=src src main
+git log -n 4 --oneline
+
