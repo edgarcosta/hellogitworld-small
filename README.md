@@ -85,5 +85,6 @@ git log -n3 --oneline --graph                                      ✔  3s
 * d072cca (origin/main) git subrepo push src
 ```
 
+# How do I get rid of the squash?
 
 
