@@ -40,7 +40,7 @@ Date:   Thu Dec 4 16:14:38 2025 +1100
 # Mixed commit
 
 
-## On big
+## On big add file1 and src/file2
 
 ```
 cd $WD/big
@@ -51,17 +51,38 @@ git subrepo push src
 git log -n2 --oneline                                               INT ✘
 d072cca (HEAD -> main) git subrepo push src
 3a26b4e files with dates
+############ not yet pushed
+(date ; cat src/file2) | sponge src/file2
+git commit -m "more dates" src/file2
+git log -n2 --oneline
+d03ee89 (HEAD -> main) more dates
+d072cca (origin/main) git subrepo push src
  ```
 
 
-## On small
+## On small modify src/file2 and update src/README.md
 ```
 cd $WD/small
 git pull
 git log -n1 --oneline                                                 ✔
 9ec63a7 (HEAD -> main, origin/main) files with dates
 date >> file2
-git commit -m "new date" file2
+git commit -m "new date and README" file2 README.md
+git push
+git log -n2 --oneline
+ce9e9d1 (HEAD -> main, origin/main) new date and README
+9ec63a7 files with dates
+```
+
+
+## On big get the changes
+
+```
+git subrepo pull src
+git log -n3 --oneline --graph                                      ✔  3s
+* 9751b1c (HEAD -> main) git subrepo pull src
+* d03ee89 more dates
+* d072cca (origin/main) git subrepo push src
 ```
 
 
