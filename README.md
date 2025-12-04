@@ -1,87 +1,68 @@
-# Create subtree
+# original clone
+```
+WD=/Users/edgarcosta/projects/subrepo
+cd $WD
+git clone git@github.com:edgarcosta/hellogitworld.git big
+cd big
+git branch -M main
+git push -u origin main
+git remote add small git@github.com:edgarcosta/hellogitworld-small.git
 
-## Save history before split
+
+# Split
+```
+git subrepo init src -r small -b main --method=rebase
+git log -n3 --oneline --graph                                           ✔
+* fd19712 (HEAD -> main) git subrepo push src
+* db2cb4e git subrepo init --remote=small --branch=main src
+* 0eec97c (origin/master, origin/main, origin/HEAD) add logs
+git log -n1                                                             ✔
+commit fd197123b34fb7454ae615c91e392c759bc3c725 (HEAD -> main)
+Author: Edgar Costa <edgarc@mit.edu>
+Date:   Thu Dec 4 16:14:38 2025 +1100
+
+    git subrepo push src
+
+    subrepo:
+      subdir:   "src"
+      merged:   "be0ae27"
+    upstream:
+      origin:   "small"
+      branch:   "main"
+      commit:   "be0ae27"
+    git-subrepo:
+      version:  "0.4.9"
+      origin:   "https://github.com/ingydotnet/git-subrepo"
+      commit:   "8bbc88c"
+```
+
+
+# Mixed commit
+
+
+## On big
 
 ```
-git push origin master_before_split
+cd $WD/big
+date > file1 ; sleep 1; date > src/file2
+git add file1 src/file2
+git commit -m "files with dates"
+git subrepo push src
+git log -n2 --oneline                                               INT ✘
+d072cca (HEAD -> main) git subrepo push src
+3a26b4e files with dates
+ ```
+
+
+## On small
 ```
-
-## Split tree
-
-```
-git subtree split --prefix=src -b src-split
-git remote add src git@github.com:edgarcosta/hellogitworld-src.git
-git push src src-split:main
-git branch -D src-split
-```
-
-## Re add src as subtree
-
-```
-git switch master
-git rm -r src
-git commit -m "Remove src to re-add as subtree"
-git fetch src main
-git subtree add --prefix=src src main
-```
-
-# Day to day life
-
-Some of these things should be done with hooks
-
-## Do a commit on the monorepo
-
-### pull changes
-```
+cd $WD/small
 git pull
-git subtree pull --prefix=src src main
+git log -n1 --oneline                                                 ✔
+9ec63a7 (HEAD -> main, origin/main) files with dates
+date >> file2
+git commit -m "new date" file2
 ```
-the last one creates a merge commit
-
-### commit
-```
-echo "#1" > src/README.md
-git add src/README.md
-git commit -m "adding README"
-```
-
-### push changes
-```
-git push
-git subtree push --prefix=src src main
-```
-
-
-
-
-## Do a commit on the standalone
-```
-git pull
-....
-git commit -am "instructions"
-git push
-```
-
-Now see the changes in the monorepo
-```
-git subtree pull --prefix=src src main
-git log -n 10 --oneline
-git push
-git subtree push --prefix=src src main
-```
-
-
-### Graphs
-```
-git log --oneline --graph
-```
-
-# Monorepo
-https://gist.github.com/edgarcosta/c6e7088f4b83138dcea2f4b2d693148a
-
-
-# Standalone
-https://gist.github.com/edgarcosta/4ddaa2d78d3a7ff530a2e9a35acba72a
 
 
 
